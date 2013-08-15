@@ -16,4 +16,4 @@ var config = require('config-env').define('NODE_ENV', function(config) {
     });
 });
 
-module.exports = config;
+module.exports = config

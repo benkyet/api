@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "0.0.0",
-  "description": " Hello",
+  "description": " Hello again",
   "main": "server.js",
   "scripts": {
     "test": "make test"

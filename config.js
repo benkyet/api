@@ -4,7 +4,7 @@ var config = require('config-env').define('NODE_ENV', function(config) {
     });
 
     config.config('dev', {
-        mongo_uri: 'mongodb://localhost:27017/benkyet',
+        mongo_uri: 'mongodb://localhost:27017/dev.benkyet',
         mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         mandrill_test: 'rR-vBeIRFJt5_Tesjflv1g',
         port: 3003

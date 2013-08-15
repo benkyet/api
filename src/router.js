@@ -3,6 +3,7 @@ var auth        =       require('./controllers/auth-manager');
 var AM          =       require('./controllers/account-manager');
 var IM          =       require('./controllers/item-manager');
 var MM          =       require('./controllers/message-manager');
+var InM         =       require('./controllers/inbound-manager');
 
 var auth = express.basicAuth(function(user, pass, cb) {
     var User = db.collection('user');
@@ -27,4 +28,6 @@ module.exports = function(app) {
     app.delete('/item', auth, IM.deleteItem);
 
     app.post('/message', MM.addMessageToDb)
+
+    app.post('/inbound', InM.inboundMandrillUrl);
 };

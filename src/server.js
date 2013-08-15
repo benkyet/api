@@ -39,7 +39,7 @@ setTimeout(function() {
 
 
 if (!module.parent) {
-    var port = config.param('express_port');
+    var port = config.param('port');
     app.listen(port);
     console.log('Listening on port ' + port);
 };

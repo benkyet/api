@@ -29,5 +29,5 @@ module.exports = function(app) {
 
     app.post('/message', MM.addMessageToDb)
 
-    app.get('/inbound', InM.inboundMandrillUrl);
+    app.post('/inbound', InM.inboundMandrillUrl);
 };

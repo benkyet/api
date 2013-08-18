@@ -16,10 +16,12 @@ exports.createNewUser = function(req, res) {
         if(err) throw err;
         if(!doc) {
             User.insert(data, function(err2, doc2) {
-                res.status(201).json(doc2);
+                res.status(201).json({status: 201, user: doc2});
             });
         } else {
-            res.status(409).send('Username already taken');
+            res.status(409);
+            console.log(res)
+            res.json({reason: 'Username already taken', status: 409});
         }
     });
 };

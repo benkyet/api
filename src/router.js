@@ -10,7 +10,7 @@ var auth = function(req, res, next) {
         var User = db.collection('user');
         User.findOne({username: user}, function(err, doc) {
             if(!doc) {
-                res.status(401).json({reason: 'User not found', status: 401});
+                res.status(401).json({reason: 'Sorry, this username was not found', status: 401});
             } else {
                 doc.pass === pass ?
                     cb(null, doc) :

@@ -5,16 +5,24 @@ var IM          =       require('./controllers/item-manager');
 var MM          =       require('./controllers/message-manager');
 var InM         =       require('./controllers/inbound-manager');
 
-var auth = express.basicAuth(function(user, pass, cb) {
-    var User = db.collection('user');
-    User.findOne({username: user}, function(err, doc) {
-        if(!doc) {
-            cb('No' + user + 'in the database', null);
-        } else {
-            doc.pass === pass ? cb(null, doc) : cb('Wrong password for ' + user, null);
-        }
-    });
-});
+var auth = function(req, res, next) {
+    express.basicAuth(function(user, pass, cb) {
+        var User = db.collection('user');
+        User.findOne({username: user}, function(err, doc) {
+            if(!doc) {
+                res.status(401).json({reason: 'User not found', status: 401});
+            } else {
+                doc.pass === pass ?
+                    cb(null, doc) :
+                    res.status(401).json({reason: 'Wrong password', status: 401});
+            }
+        });
+    })(req, res, next);
+}
+
+
+
+
 
 
 module.exports = function(app) {

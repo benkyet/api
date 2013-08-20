@@ -43,7 +43,7 @@ exports.addItem = function(req, res) {
                 };
             });
         };
-        closure(img, date, i)
+        closure(img, date, i);
     }
 };
 

@@ -32,6 +32,7 @@ module.exports = function(app) {
 
     app.get('/user/items', auth, AM.getItemListForUser);
 
+    app.get('/items', IM.getItems);
     app.post('/item', auth, IM.addItem)
     app.delete('/item', auth, IM.deleteItem);
 

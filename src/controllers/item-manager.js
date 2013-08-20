@@ -14,6 +14,17 @@ var s3 = knox.createClient({
 
 var Item = db.collection('item');
 
+exports.getItems = function(req, res) {
+    Item.find({}).toArray(function(err, docs) {
+        console.log(err, docs)
+        var response = {
+            status: 200,
+            items: docs
+        };
+        res.status(200).json(response);
+    })
+}
+
 exports.addItem = function(req, res) {
     var data = req.body;
     var length = data.pictures.length;

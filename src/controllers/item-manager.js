@@ -13,6 +13,64 @@ var s3 = knox.createClient({
 //});
 
 var Item = db.collection('item');
+var Counter = db.collection('counter');
+
+Counter.insert(
+    {
+        _id: "ref",
+        seq: 0
+    }
+, function(e,d) {})
+
+function getNextSequence(name, cb) {
+    Counter.findAndModify(
+        {_id: name},
+        [],
+        {$inc: {seq: 1}},
+        {new: true},
+        function(e, d) {
+            console.log(e, d)
+            cb(d.seq);
+        }
+    );
+};
+
+exports.getItem = function(req, res) {
+    Item.findOne({ref: parseInt(req.params.ref)}, function(err, doc) {
+        var successResponse = {
+            status: 200,
+            item: doc
+        }
+        console.log(doc)
+        !doc ? res.status(404).json({status: 404, reason: 'Item not found'}) : res.status(200).send(successResponse);
+    });
+}
+
+//Anonym.findAndModify(
+//
+//    {email: data.message.from_email},
+//    [],
+//    {$inc: {message_sent: 1}},
+//    {new: true},
+//    function(e2, d2) {
+//        var imail = d2._id + '@mail.benkyet.com';
+//        data.message.from_email = imail;
+//        message.message = data.message;
+//
+//        mandrill.post('/messages/send.json')
+//            .send(message)
+//            .end(function(e3, r) {
+//                var response_mandrill = r.body[0];
+//                var response = {
+//                    status: response_mandrill.status,
+//                    email: response_mandrill.email,
+//                    message_sent: d2.message_sent
+//                };
+//                response_mandrill.status === 'sent' || 'queued' ? res.status(200).json(response) : res.status(400);
+//            });
+//    }
+//)
+
 
 exports.getItems = function(req, res) {
     Item.find({}).toArray(function(err, docs) {
@@ -23,7 +81,7 @@ exports.getItems = function(req, res) {
         };
         res.status(200).json(response);
     })
-}
+};
 
 exports.addItem = function(req, res) {
     var data = req.body;
@@ -43,14 +101,21 @@ exports.addItem = function(req, res) {
 
                 if(m === length) {
                     data.seller_id = req.user._id;
-                    Item.insert(data, function(dberr, doc) {
-                        //if (err) throw err;
-                        var response = {
-                            status: 201,
-                            item: doc[0]
-                        };
-                        res.status(201).json(response);
-                    });
+                    getNextSequence('ref', function(ref) {
+                        data.ref = ref;
+
+                        Item.insert(data, function(dberr, doc) {
+                            //if (err) throw err;
+                            var response = {
+                                status: 201,
+                                item: doc[0]
+                            };
+                            res.status(201).json(response);
+                        });
+                    })
+
+
+
                 };
             });
         };

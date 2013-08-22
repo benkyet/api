@@ -36,14 +36,24 @@ function getNextSequence(name, cb) {
 };
 
 exports.getGroupList = function(req, res) {
-    console.log(req.query);
-    Item.find({group: req.query.group}).toArray(function(err, docs) {
-        var response = {
-            status: 200,
-            items: docs
-        };
-        res.status(200).json(response);
-    })
+    if(req.query.group) {
+        Item.find({}).toArray(function(err, docs) {
+            console.log(err, docs)
+            var response = {
+                status: 200,
+                items: docs
+            };
+            res.status(200).json(response);
+        })
+    } else {
+        Item.find({group: req.query.group}).toArray(function(err, docs) {
+            var response = {
+                status: 200,
+                items: docs
+            };
+            res.status(200).json(response);
+        })
+    }
 }
 
 exports.getItem = function(req, res) {
@@ -81,18 +91,6 @@ exports.getItem = function(req, res) {
 //            });
 //    }
 //)
-
-
-exports.getItems = function(req, res) {
-    Item.find({}).toArray(function(err, docs) {
-        console.log(err, docs)
-        var response = {
-            status: 200,
-            items: docs
-        };
-        res.status(200).json(response);
-    })
-};
 
 exports.addItem = function(req, res) {
     var data = req.body;

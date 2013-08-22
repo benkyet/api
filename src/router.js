@@ -35,7 +35,6 @@ module.exports = function(app) {
 
     app.get('/items', IM.getGroupList);
     app.get('/item/:ref', IM.getItem);
-    app.get('/items', IM.getItems);
     app.post('/item', auth, IM.addItem)
     app.delete('/item', auth, IM.deleteItem);
 

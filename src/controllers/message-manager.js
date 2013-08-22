@@ -127,8 +127,8 @@ exports.addMessageToDb = function(req, res) {
             {upsert: true, new: true},
             function(err2, sender) {
 
-                message.message.from_email = sender.email.split('@')[0] + '@mail.benkyet.com';
-                message.message.headers['Reply-To'] = sender.email.split('@')[0] + '@mail.benkyet.com';
+                message.message.from_email = sender._id + '@mail.benkyet.com';
+                message.message.headers['Reply-To'] = sender._id + '@mail.benkyet.com';
 
                 mandrill.post('/messages/send.json')
                     .send(message)

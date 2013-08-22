@@ -35,6 +35,17 @@ function getNextSequence(name, cb) {
     );
 };
 
+exports.getGroupList = function(req, res) {
+    console.log(req.query);
+    Item.find({group: req.query.group}).toArray(function(err, docs) {
+        var response = {
+            status: 200,
+            items: docs
+        };
+        res.status(200).json(response);
+    })
+}
+
 exports.getItem = function(req, res) {
     Item.findOne({ref: parseInt(req.params.ref)}, function(err, doc) {
         var successResponse = {

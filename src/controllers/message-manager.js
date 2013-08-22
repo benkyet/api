@@ -11,7 +11,7 @@ function getId(id) {
 
 
 exports.inboundMessage = function(req, res) {
-    console.log(req, res)
+    console.log(req.body)
 }
 
 exports.addMessageToDb = function(req, res) {

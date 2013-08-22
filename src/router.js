@@ -38,7 +38,7 @@ module.exports = function(app) {
     app.post('/item', auth, IM.addItem);
     app.delete('/item', auth, IM.deleteItem);
 
-    app.post('/message', MM.addMessageToDb);
+    app.post('/message', MM.addMessageToDb)
 
     app.post('/inbound', MM.inboundMessage);
 };

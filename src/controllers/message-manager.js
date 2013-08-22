@@ -68,12 +68,7 @@ exports.inboundMessage = function(req, res) {
                         .send(outbound)
                         .end(function(m_err, m_res) {
                             var response_mandrill = m_res.body[0];
-//                            var response = {
-//                                status: response_mandrill.status,
-//                                email: response_mandrill.email
-//                            };
-                            console.log(m_err, m_res.text);
-
+                            console.log(response_mandrill);
                         });
 
                 }

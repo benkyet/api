@@ -40,5 +40,5 @@ module.exports = function(app) {
 
     app.post('/message', MM.addMessageToDb)
 
-    app.post('/inbound', IM.inboundMessage);
+    app.post('/inbound', MM.inboundMessage);
 };

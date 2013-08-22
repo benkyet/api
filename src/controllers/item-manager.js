@@ -98,7 +98,7 @@ exports.addItem = function(req, res) {
     var length = data.pictures.length;
     //console.log(data.name);
     console.log(length)
-    var m = 0;
+    var m = 0
 
     for (var i = 0; i < length; i++) {
         var img = new Buffer(data.pictures[i], 'base64');

@@ -93,6 +93,7 @@ exports.getItem = function(req, res) {
 //)
 
 exports.addItem = function(req, res) {
+    console.log(req.body);
     var data = req.body;
     var length = data.pictures.length;
     var m = 0;

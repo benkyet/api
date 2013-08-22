@@ -89,7 +89,7 @@ exports.inboundMessage = function(req, res) {
     );
 }
 
-exports.addMessageToDb = function(req, res) {
+exports.sendMessageViaMandrill = function(req, res) {
     var data = req.body;
 
     var message = {

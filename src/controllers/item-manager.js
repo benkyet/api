@@ -36,7 +36,7 @@ function getNextSequence(name, cb) {
 };
 
 exports.getGroupList = function(req, res) {
-    if(req.query.group) {
+    if(!req.query.group) {
         Item.find({}).toArray(function(err, docs) {
             console.log(err, docs)
             var response = {

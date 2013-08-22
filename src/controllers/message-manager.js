@@ -127,8 +127,15 @@ exports.addMessageToDb = function(req, res) {
             {upsert: true, new: true},
             function(err2, sender) {
 
-                message.message.from_email = sender._id + '@mail.benkyet.com';
-                message.message.headers['Reply-To'] = sender._id + '@mail.benkyet.com';
+                if(sender.username) {
+                    message.message.from_email = sender.username + '@mail.benkyet.com';
+                    message.message.headers['Reply-To'] = sender.username + '@mail.benkyet.com';
+                } else {
+                    message.message.from_email = sender._id + '@mail.benkyet.com';
+                    message.message.headers['Reply-To'] = sender._id + '@mail.benkyet.com';
+                }
+
+
 
                 mandrill.post('/messages/send.json')
                     .send(message)

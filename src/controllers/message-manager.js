@@ -51,10 +51,10 @@ exports.inboundMessage = function(req, res) {
                 {username: to_prefix},
                 function(err2, recepient) {
                     if(recepient.username) {
-                        outbound.message.to.email = recepient.username + '@mail.benkyet.com';
+                        outbound.message.to.email = recepient.email;
                         outbound.message.to.name = recepient.username;
                     } else {
-                        outbound.message.to.email = recepient._id + '@mail.benkyet.com';
+                        outbound.message.to.email = recepient.email;
                         outbound.message.to.name = recepient._id;
                     }
 
@@ -68,7 +68,7 @@ exports.inboundMessage = function(req, res) {
 //                                status: response_mandrill.status,
 //                                email: response_mandrill.email
 //                            };
-                            console.log(response);
+                            console.log(response_mandrill);
                             res.send('ok');
                         });
 

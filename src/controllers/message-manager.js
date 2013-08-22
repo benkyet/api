@@ -70,19 +70,13 @@ exports.inboundMessage = function(req, res) {
                                 email: response_mandrill.email
                             };
                             console.log(response);
-                            response_mandrill.status === 'sent' || 'queued' ? res.status(200).json(response) : res.status(400);
+                            res.send('ok');
                         });
 
                 }
             )
-
-
         }
-    )
-
-
-
-    res.send('ok')
+    );
 }
 
 exports.addMessageToDb = function(req, res) {

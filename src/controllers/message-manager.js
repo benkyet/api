@@ -70,7 +70,7 @@ exports.inboundMessage = function(req, res) {
 //                                status: response_mandrill.status,
 //                                email: response_mandrill.email
 //                            };
-                            console.log(response_mandrill);
+                            console.log(m_err, m_res);
 
                         });
 

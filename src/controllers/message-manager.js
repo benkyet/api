@@ -11,7 +11,7 @@ function getId(id) {
 
 
 exports.inboundMessage = function(req, res) {
-    console.log(req.body.message);
+    console.log(req.body);
     res.send('ok')
 }
 

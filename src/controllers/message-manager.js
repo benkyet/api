@@ -53,11 +53,11 @@ exports.inboundMessage = function(req, res) {
                 {username: to_prefix},
                 function(err2, recepient) {
                     if(recepient.username) {
-                        outbound.message.to.email = recepient.email;
-                        outbound.message.to.name = recepient.username;
+                        outbound.message.to[0].email = recepient.email;
+                        outbound.message.to[0].name = recepient.username;
                     } else {
-                        outbound.message.to.email = recepient.email;
-                        outbound.message.to.name = recepient._id;
+                        outbound.message.to[0].email = recepient.email;
+                        outbound.message.to[0].name = recepient._id;
                     }
 
                     outbound.message.html = inbound.html

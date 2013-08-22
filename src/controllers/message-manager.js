@@ -11,7 +11,7 @@ function getId(id) {
 
 
 exports.inboundMessage = function(req, res) {
-    console.log(req.body.mandrill_events);
+    console.log(JSON.parse(req.body.mandrill_events).msg);
     res.send('ok')
 }
 

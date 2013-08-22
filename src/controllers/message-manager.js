@@ -49,8 +49,15 @@ exports.inboundMessage = function(req, res) {
                 outbound.message.from_name = sender._id;
             }
 
+            var query;
+            if(to_prefix.length === 24) {
+                query = {_id: getId(to_prefix)};
+            } else {
+                query = {username: to_prefix};
+            }
+
             User.findOne(
-                {username: to_prefix},
+                query,
                 function(err2, recepient) {
                     if(recepient.username) {
                         outbound.message.to[0].email = recepient.email;
@@ -60,9 +67,7 @@ exports.inboundMessage = function(req, res) {
                         outbound.message.to[0].name = recepient._id;
                     }
 
-                    outbound.message.html = inbound.html
-
-                    console.log(outbound)
+                    outbound.message.html = inbound.html;
 
                     mandrill.post('/messages/send.json')
                         .send(outbound)

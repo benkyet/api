@@ -19,8 +19,8 @@ exports.inboundMessage = function(req, res) {
         "key": config.param('mandrill_key'),
         "message": {
             "html": "",
-            "text": "Example text content",
-            "subject": "History Text Book",
+            "text": "",
+            "subject": "",
             "from_email": "",
             "from_name": "",
             "to": [
@@ -30,10 +30,15 @@ exports.inboundMessage = function(req, res) {
                 }
             ],
             "headers": {
-                "Reply-To": "hello"
+                "Reply-To": ""
             }
         }
     };
+
+    outbound.message.subject = inbound.subject;
+    outbound.message.html = inbound.html;
+    outbound.message.text = inbound.text;
+
     var to_prefix = inbound.email.split('@')[0];
     User.findAndModify(
         {email: inbound.from_email},
@@ -44,9 +49,11 @@ exports.inboundMessage = function(req, res) {
             if(sender.username) {
                 outbound.message.from_email = sender.username + '@mail.benkyet.com';
                 outbound.message.from_name = sender.username;
+                outbound.message.headers['Reply-To'] = sender.username + '@mail.benkyet.com';
             } else {
                 outbound.message.from_email = sender._id + '@mail.benkyet.com';
                 outbound.message.from_name = sender._id;
+                outbound.message.headers['Reply-To'] = sender._id + '@mail.benkyet.com';
             }
 
             var query;
@@ -67,7 +74,7 @@ exports.inboundMessage = function(req, res) {
                         outbound.message.to[0].name = recepient._id;
                     }
 
-                    outbound.message.html = inbound.html;
+
 
                     mandrill.post('/messages/send.json')
                         .send(outbound)
@@ -88,23 +95,26 @@ exports.addMessageToDb = function(req, res) {
     var message = {
         "key": config.param('mandrill_key'),
         "message": {
-            "html": "<p>"+data.message.body+"</p>",
-            "text": "Example text content",
-            "subject": "History Text Book",
+            "html": "",
+            "text": "",
+            "subject": "",
             "from_email": "",
-            "from_name": data.message.name,
+            "from_name": "",
             "to": [
                 {
                     "email": "",
-                    "name": "hello"
+                    "name": ""
                 }
             ],
             "headers": {
-                "Reply-To": "hello"
+                "Reply-To": ""
             }
         }
     };
-
+    message.message.html = "<p>"+data.message.body+"</p>";
+    message.message.text = data.message.body;
+    message.message.subject = data.message.subject;
+    message.message.from_name = data.message.name;
 
     User.findOne({_id: getId(data.seller_id)}, function(err, doc) {
         message.message.to[0].email = doc.email;
@@ -116,8 +126,9 @@ exports.addMessageToDb = function(req, res) {
             {$inc: {message_sent: 1}},
             {upsert: true, new: true},
             function(err2, sender) {
-                console.log(err2, sender)
+
                 message.message.from_email = sender.email.split('@')[0] + '@mail.benkyet.com';
+                message.message.headers['Reply-To'] = sender.email.split('@')[0] + '@mail.benkyet.com';
 
                 mandrill.post('/messages/send.json')
                     .send(message)

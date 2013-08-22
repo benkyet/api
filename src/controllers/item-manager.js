@@ -93,10 +93,12 @@ exports.getItem = function(req, res) {
 //)
 
 exports.addItem = function(req, res) {
-    console.log(req.body);
+    console.log(req.body.name)
     var data = req.body;
     JSON.parse(data.pictures);
     var length = data.pictures.length;
+    console.log(data.name);
+    console.log(length)
     var m = 0;
 
     for (var i = 0; i < length; i++) {

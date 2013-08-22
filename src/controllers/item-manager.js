@@ -94,7 +94,7 @@ exports.getItem = function(req, res) {
 
 exports.addItem = function(req, res) {
     var data = req.body;
-    console.log(data.name)
+    data.pictures = JSON.parse(data.pictures);
     var length = data.pictures.length;
     //console.log(data.name);
     console.log(length)

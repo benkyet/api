@@ -62,6 +62,8 @@ exports.inboundMessage = function(req, res) {
 
                     outbound.message.html = inbound.html
 
+                    console.log(outbound)
+
                     mandrill.post('/messages/send.json')
                         .send(outbound)
                         .end(function(m_err, m_res) {

@@ -13,6 +13,8 @@ function getId(id) {
 exports.inboundMessage = function(req, res) {
     var inbound = JSON.parse(req.body.mandrill_events)[0].msg;
 
+    res.send('ok');
+
     var outbound = {
         "key": config.param('mandrill_key'),
         "message": {
@@ -69,7 +71,7 @@ exports.inboundMessage = function(req, res) {
 //                                email: response_mandrill.email
 //                            };
                             console.log(response_mandrill);
-                            res.send('ok');
+
                         });
 
                 }

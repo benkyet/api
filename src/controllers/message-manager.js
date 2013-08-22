@@ -32,10 +32,9 @@ exports.inboundMessage = function(req, res) {
             }
         }
     };
-    var from_prefix = inbound.from_email.split('@')[0];
     var to_prefix = inbound.email.split('@')[0];
     User.findAndModify(
-        { $or: [{username: from_prefix}]},
+        {email: inbound.from_email},
         [],
         {$inc: {message_sent: 1}},
         {new: true},
@@ -49,7 +48,7 @@ exports.inboundMessage = function(req, res) {
             }
 
             User.findOne(
-                {$or: [{username: to_prefix}]},
+                {username: to_prefix},
                 function(err2, recepient) {
                     if(recepient.username) {
                         outbound.message.to.email = recepient.username + '@mail.benkyet.com';

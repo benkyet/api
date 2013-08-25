@@ -142,8 +142,7 @@ exports.sendMessageViaMandrill = function(req, res) {
                     .end(function(m_err, m_res) {
                         var response_mandrill = m_res.body[0];
                         var response = {
-                            status: response_mandrill.status,
-                            email: response_mandrill.email
+                            status: response_mandrill.status
                         };
                         console.log(response);
                         response_mandrill.status === 'sent' || 'queued' ? res.status(200).json(response) : res.status(400);

@@ -66,7 +66,11 @@ exports.login = function(req, res) {
                 var session_id = crypto.createHash('sha1').update(current_date + random).digest('hex');
 
                 // Create session document
-                var session = {'username': doc.username, 'session_id': session_id}
+                var session = {
+                    'username': doc.username,
+                    'session_id': session_id,
+                    'user_id': doc._id
+                }
 
                 // Insert session document
                 Session.insert(session, function (err2, result) {

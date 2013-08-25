@@ -25,6 +25,31 @@ exports.isLoggedInMiddleware = function(req, res, next) {
     });
 };
 
+exports.autologin = function(req, res) {
+    console.log(req.body)
+    console.log('autologin')
+    Session.findOne({session_id: req.headers['token']}, function(err, doc) {
+
+        if(!doc) {
+
+            res.status(401).json({status: 401, reason: 'Token not found'})
+
+        } else {
+
+            User.findOne({username: doc.username}, function(err_u, user){
+                var response = {
+                    status: 200,
+                    user: user
+                };
+
+                res.status(200).json(response);
+            });
+
+
+        }
+    })
+};
+
 exports.login = function(req, res) {
     var data = req.body;
 

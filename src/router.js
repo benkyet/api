@@ -29,6 +29,7 @@ var auth = AM.isLoggedInMiddleware;
 
 
 module.exports = function(app) {
+    app.get('/autologin', AM.autologin);
     app.post('/login', AM.login);
     app.post('/user', AM.createNewUser);
     app.delete('/user', auth, AM.deleteUser);

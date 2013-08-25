@@ -3,7 +3,7 @@ var auth        =       require('./controllers/auth-manager');
 var AM          =       require('./controllers/account-manager');
 var IM          =       require('./controllers/item-manager');
 var MM          =       require('./controllers/message-manager');
-var GM          =       require('./controllers/group-manager')
+var GM          =       require('./controllers/group-manager');
 
 var auth = AM.isLoggedInMiddleware;
 

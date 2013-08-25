@@ -3,6 +3,7 @@ var auth        =       require('./controllers/auth-manager');
 var AM          =       require('./controllers/account-manager');
 var IM          =       require('./controllers/item-manager');
 var MM          =       require('./controllers/message-manager');
+var GM          =       require('./controllers/group-manager');
 
 var auth = AM.isLoggedInMiddleware;
 
@@ -41,6 +42,8 @@ module.exports = function(app) {
     app.get('/item/:ref', IM.getItem);
     app.post('/item', auth, IM.addItem);
     app.delete('/item', auth, IM.deleteItem);
+
+    app.get('/groups', GM.getGroups);
 
     app.post('/message', MM.sendMessageViaMandrill);
 

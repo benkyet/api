@@ -43,5 +43,5 @@ module.exports = function(app) {
 
     app.post('/message', MM.sendMessageViaMandrill);
 
-    app.post('/inbound', MM.inboundMessage);
+    app.post('/inbound', MM.inboundMessage)
 };

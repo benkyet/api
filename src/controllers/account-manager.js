@@ -26,8 +26,7 @@ exports.isLoggedInMiddleware = function(req, res, next) {
 };
 
 exports.autologin = function(req, res) {
-    console.log(req.body)
-    console.log('autologin')
+//    console.log('autologin')
     Session.findOne({session_id: req.headers['token']}, function(err, doc) {
 
         if(!doc) {
@@ -92,6 +91,23 @@ exports.login = function(req, res) {
             res.status(401).json({status: 401, reason: "Sorry, this username was not found"})
         }
     })
+};
+
+exports.logout = function(req, res) {
+    var data = req.body;
+
+    Session.remove({session_id: req.headers['token']}, function(err, doc) {
+        if(!doc) {
+
+            res.status(401).json({status: 401, reason: 'Token not found'})
+
+        } else {
+
+            res.status(200).json({status: 200});
+
+
+        }
+    })
 }
 
 
@@ -140,9 +156,7 @@ exports.deleteUser = function(req, res) {
 };
 
 exports.getItemListForUser = function(req, res) {
-    console.log(req.user.username)
     User.find({"username": req.user.username}).toArray(function(err, docs) {
-        console.log(err, docs)
         if (err) throw err;
         res.status(200).json(docs);
     });

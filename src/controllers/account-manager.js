@@ -118,7 +118,7 @@ exports.logout = function(req, res) {
 exports.userItems = function(req, res) {
 
     Item.find(
-        {seller_id: getid(req.user.user_id)}
+        {seller_id: getId(req.user.user_id.toString())}
     ).toArray(function(err, docs) {
             var response = {
                 status: 200,

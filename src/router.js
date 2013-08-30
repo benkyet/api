@@ -35,7 +35,7 @@ module.exports = function(app) {
     app.del('/logout', AM.logout);
     app.post('/user', AM.createNewUser);
     app.delete('/user', auth, AM.deleteUser);
-    app.get('/user/items', auth, AM.userItems)
+    app.get('/user/items', auth, AM.userItems);
 
 
     app.get('/items', IM.getGroupList);
@@ -47,5 +47,8 @@ module.exports = function(app) {
 
     app.post('/message', MM.sendMessageViaMandrill);
 
+    app.post('/inbound', function(req, res) {
+        res.send('ok')
+    })
     app.post('/inbound', MM.inboundMessage)
 };

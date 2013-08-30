@@ -5,6 +5,11 @@ var User = db.collection('user');
 var Session = db.collection('session');
 var Item = db.collection('item');
 
+var ObjectID    =   require('mongodb').ObjectID;
+function getId(id) {
+    return new ObjectID(id);
+}
+
 /**
  * With the basic Auth Middleware included with express, we can stick the
  * auth authenticated on the req.user and grab it in the request handlers.
@@ -113,7 +118,7 @@ exports.logout = function(req, res) {
 exports.userItems = function(req, res) {
 
     Item.find(
-        {seller_id: req.user.user_id.toString()}
+        {seller_id: getid(req.user.user_id)}
     ).toArray(function(err, docs) {
             var response = {
                 status: 200,

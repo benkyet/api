@@ -71,7 +71,7 @@ exports.addItem = function(req, res) {
         var img = new Buffer(data.pictures[i], 'base64');
         var date = new Date()
         function closure (aImg, aDate, j) {
-            return s3.putBuffer(aImg, config.params('s3_folder') + aDate.valueOf().toString() + '.jpg', {'x-amz-acl': 'public-read'}, function(err, s3res) {
+            return s3.putBuffer(aImg, config.param('s3_folder') + aDate.valueOf().toString() + '.jpg', {'x-amz-acl': 'public-read'}, function(err, s3res) {
                 //console.log(err, s3res.req.url);
                 if(s3res.statusCode === 200) {
                     data.pictures[j] = s3res.req.url

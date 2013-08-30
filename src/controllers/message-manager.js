@@ -2,81 +2,155 @@ var supertest   =   require('supertest');
 var mandrill    =   supertest('https://mandrillapp.com/api/1.0/');
 var config      =   require('./../../config.js');
 
-var Message     =   db.collection('message');
-var Anonym      =   db.collection('anonym');
+var domain = config.param('domain');
 
-exports.addMessageToDb = function(req, res) {
-    var data = req.body;
+var User        =   db.collection('user');
+var ObjectID    =   require('mongodb').ObjectID;
+function getId(id) {
+    return new ObjectID(id);
+}
 
-    /* TODO:  1- Check if data.from property exists
-                a) If not, add this user to the anonym collection, {imail, email, _id}
-              2- If it's a known user, check the user collection and replace his email
-              with his imail.
-     */
-    var message = {
-        "key": config.param('mandrill_test')
-    }
-    if(!data.user) {
 
-        Anonym.findOne({email: data.message.from_email}, function(e, d) {
-            if(!d) {
 
-                Anonym.insert({email: data.message.from_email, message_sent: 1}, function(e1, d1) {
-                    if(e1) throw e1;
-                    var imail = d1[0]._id + '@mail.benkyet.com';
-                    data.message.from_email = imail;
+exports.inboundMessage = function(req, res) {
+    var inbound = JSON.parse(req.body.mandrill_events)[0].msg;
 
-                    message.message = data.message;
-                    mandrill.post('/messages/send.json')
-                        .send(message)
-                        .end(function(e, r) {
-                            var response_mandrill = r.body[0];
-                            var response = {
-                                status: response_mandrill.status,
-                                email: response_mandrill.email,
-                                message_sent: d1[0].message_sent
-                            };
-                            console.log(response);
-                            response_mandrill.status === 'sent' || 'queued' ? res.status(200).json(response) : res.status(400);
-                        });
-                });
+    res.send('ok');
+
+    var outbound = {
+        "key": config.param('mandrill_key'),
+        "message": {
+            "html": "",
+            "text": "",
+            "subject": "",
+            "from_email": "",
+            "from_name": "",
+            "to": [
+                {
+                    "email": "",
+                    "name": ""
+                }
+            ],
+            "headers": {
+                "Reply-To": ""
+            }
+        }
+    };
+
+    outbound.message.subject = inbound.subject;
+    outbound.message.html = inbound.html;
+    outbound.message.text = inbound.text;
+
+    var to_prefix = inbound.email.split('@')[0];
+    User.findAndModify(
+        {email: inbound.from_email},
+        [],
+        {$inc: {message_sent: 1}},
+        {new: true},
+        function(err, sender) {
+            if(sender.username) {
+                outbound.message.from_email = sender.username + domain;
+                outbound.message.from_name = sender.username;
+                outbound.message.headers['Reply-To'] = sender.username + domain;
             } else {
-                Anonym.findAndModify(
-
-                        {email: data.message.from_email},
-                        [],
-                        {$inc: {message_sent: 1}},
-                        {new: true},
-                    function(e2, d2) {
-                        var imail = d2._id + '@mail.benkyet.com';
-                        data.message.from_email = imail;
-                        message.message = data.message;
-
-                        mandrill.post('/messages/send.json')
-                            .send(message)
-                            .end(function(e3, r) {
-                                var response_mandrill = r.body[0];
-                                var response = {
-                                    status: response_mandrill.status,
-                                    email: response_mandrill.email,
-                                    message_sent: d2.message_sent
-                                };
-                                response_mandrill.status === 'sent' || 'queued' ? res.status(200).json(response) : res.status(400);
-                            });
-                    }
-                )
+                outbound.message.from_email = sender._id + domain;
+                outbound.message.from_name = sender._id;
+                outbound.message.headers['Reply-To'] = sender._id + domain;
             }
 
-        })
+            var query;
+            if(to_prefix.length === 24) {
+                query = {_id: getId(to_prefix)};
+            } else {
+                query = {username: to_prefix};
+            }
+
+            User.findOne(
+                query,
+                function(err2, recepient) {
+                    if(recepient.username) {
+                        outbound.message.to[0].email = recepient.email;
+                        outbound.message.to[0].name = recepient.username;
+                    } else {
+                        outbound.message.to[0].email = recepient.email;
+                        outbound.message.to[0].name = recepient._id;
+                    }
 
 
 
+                    mandrill.post('/messages/send.json')
+                        .send(outbound)
+                        .end(function(m_err, m_res) {
+                            var response_mandrill = m_res.body[0];
+                            console.log(response_mandrill);
+                        });
 
-
-
-
-    } else {
-
-    }
-
+                }
+            )
+        }
+    );
 }
+
+exports.sendMessageViaMandrill = function(req, res) {
+    var data = req.body;
+
+    var message = {
+        "key": config.param('mandrill_key'),
+        "message": {
+            "html": "",
+            "text": "",
+            "subject": "",
+            "from_email": "",
+            "from_name": "",
+            "to": [
+                {
+                    "email": "",
+                    "name": ""
+                }
+            ],
+            "headers": {
+                "Reply-To": ""
+            }
+        }
+    };
+    message.message.html = "<p>"+data.message.body+"</p>";
+    message.message.text = data.message.body;
+    message.message.subject = data.message.subject;
+    message.message.from_name = data.message.name;
+
+    User.findOne({_id: getId(data.seller_id)}, function(err, doc) {
+        message.message.to[0].email = doc.email;
+        message.message.to[0].name = doc.username;
+
+        User.findAndModify(
+            {email: data.message.email},
+            [],
+            {$inc: {message_sent: 1}},
+            {upsert: true, new: true},
+            function(err2, sender) {
+
+                if(sender.username) {
+                    message.message.from_email = sender.username + domain;
+                    message.message.headers['Reply-To'] = sender.username + domain;
+                } else {
+                    message.message.from_email = sender._id + domain;
+                    message.message.headers['Reply-To'] = sender._id + domain;
+                }
+
+
+
+                mandrill.post('/messages/send.json')
+                    .send(message)
+                    .end(function(m_err, m_res) {
+                        var response_mandrill = m_res.body[0];
+                        var response = {
+                            status: response_mandrill.status
+                        };
+                        console.log(response);
+                        response_mandrill.status === 'sent' || 'queued' ? res.status(200).json(response) : res.status(400);
+                    });
+            }
+        )
+
+    });
+};

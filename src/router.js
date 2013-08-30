@@ -48,7 +48,7 @@ module.exports = function(app) {
     app.post('/message', MM.sendMessageViaMandrill);
 
     app.post('/inbound', function(req, res) {
-        res.send('ok')
+        res.status(200).send('ok')
     })
     app.post('/inbound', MM.inboundMessage)
 };

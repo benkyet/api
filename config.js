@@ -5,6 +5,7 @@ var config = require('config-env').define('NODE_ENV', function(config) {
 
     config.config('dev', {
         mongo_uri: 'mongodb://localhost:27017/dev_benkyet',
+        domain: '@mail.benkyet.com',
         s3_key: 'AKIAICADFD3QBIHXQTOA',
         s3_secret: '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',
         s3_bucket: 'benkyet',
@@ -17,6 +18,7 @@ var config = require('config-env').define('NODE_ENV', function(config) {
 
     config.config('prod', {
         mongo_uri: 'mongodb://localhost:27017/benkyet',
+        domain: '@benkyet.com',
         s3_key: 'AKIAICADFD3QBIHXQTOA',
         s3_secret: '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',
         s3_bucket: 'benkyet',

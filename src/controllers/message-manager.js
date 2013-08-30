@@ -2,6 +2,8 @@ var supertest   =   require('supertest');
 var mandrill    =   supertest('https://mandrillapp.com/api/1.0/');
 var config      =   require('./../../config.js');
 
+var domain = config.param('domain');
+
 var User        =   db.collection('user');
 var ObjectID    =   require('mongodb').ObjectID;
 function getId(id) {
@@ -47,13 +49,13 @@ exports.inboundMessage = function(req, res) {
         {new: true},
         function(err, sender) {
             if(sender.username) {
-                outbound.message.from_email = sender.username + '@mail.benkyet.com';
+                outbound.message.from_email = sender.username + domain;
                 outbound.message.from_name = sender.username;
-                outbound.message.headers['Reply-To'] = sender.username + '@mail.benkyet.com';
+                outbound.message.headers['Reply-To'] = sender.username + domain;
             } else {
-                outbound.message.from_email = sender._id + '@mail.benkyet.com';
+                outbound.message.from_email = sender._id + domain;
                 outbound.message.from_name = sender._id;
-                outbound.message.headers['Reply-To'] = sender._id + '@mail.benkyet.com';
+                outbound.message.headers['Reply-To'] = sender._id + domain;
             }
 
             var query;
@@ -128,11 +130,11 @@ exports.sendMessageViaMandrill = function(req, res) {
             function(err2, sender) {
 
                 if(sender.username) {
-                    message.message.from_email = sender.username + '@mail.benkyet.com';
-                    message.message.headers['Reply-To'] = sender.username + '@mail.benkyet.com';
+                    message.message.from_email = sender.username + domain;
+                    message.message.headers['Reply-To'] = sender.username + domain;
                 } else {
-                    message.message.from_email = sender._id + '@mail.benkyet.com';
-                    message.message.headers['Reply-To'] = sender._id + '@mail.benkyet.com';
+                    message.message.from_email = sender._id + domain;
+                    message.message.headers['Reply-To'] = sender._id + domain;
                 }
 
 

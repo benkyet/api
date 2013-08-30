@@ -3,6 +3,7 @@ var crypto = require('crypto');
 
 var User = db.collection('user');
 var Session = db.collection('session');
+var Item = db.collection('item');
 
 /**
  * With the basic Auth Middleware included with express, we can stick the
@@ -43,8 +44,6 @@ exports.autologin = function(req, res) {
 
                 res.status(200).json(response);
             });
-
-
         }
     })
 };
@@ -108,8 +107,21 @@ exports.logout = function(req, res) {
 
         }
     })
-}
+};
 
+
+exports.userItems = function(req, res) {
+
+    Item.find(
+        {seller_id: req.user.user_id.toString()}
+    ).toArray(function(err, docs) {
+            var response = {
+                status: 200,
+                items: docs
+            }
+            res.status(200).json(response);
+        })
+}
 
 exports.createNewUser = function(req, res) {
     var data = req.body;
@@ -152,12 +164,5 @@ exports.deleteUser = function(req, res) {
     User.remove({username: data.username}, function(err, doc) {
         if (err) throw err;
         res.status(204).json(doc);
-    });
-};
-
-exports.getItemListForUser = function(req, res) {
-    User.find({"username": req.user.username}).toArray(function(err, docs) {
-        if (err) throw err;
-        res.status(200).json(docs);
     });
 };

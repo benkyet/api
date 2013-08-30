@@ -9,6 +9,7 @@ var config = require('config-env').define('NODE_ENV', function(config) {
         s3_secret: 'lTgE9xBvmU9jlNSZTmQqrY1OBPww0m7Cobm8u/YU',
         s3_bucket: 'benkyet',
         s3_region: 'eu-west-1',
+        s3_folder: 'test/',
         mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         mandrill_test: 'rR-vBeIRFJt5_Tesjflv1g',
         port: 3003
@@ -16,7 +17,12 @@ var config = require('config-env').define('NODE_ENV', function(config) {
 
     config.config('prod', {
         mongo_uri: 'mongodb://localhost:27017/benkyet',
-        mandrill_key: '',
+        s3_key: 'AKIAICADFD3QBIHXQTOA',
+        s3_secret: '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',
+        s3_bucket: 'benkyet',
+        s3_region: 'eu-west-1',
+        s3_folder: 'prod/',
+        mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         port: 3000
     });
 });

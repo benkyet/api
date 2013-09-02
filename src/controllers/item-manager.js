@@ -135,12 +135,13 @@ exports.deleteItem = function(req, res) {
     var data = req.body;
 
     Item.remove({_id: getId(data._id)}, function(err, doc) {
-        if(err) throw err;
-        var response = {
-            status: 204,
-            items_deleted: doc
-        };
-
-        res.status(200).send(response);
+        res.send(doc)
+//        if(err) throw err;
+//        var response = {
+//            status: 204,
+//            items_deleted: doc
+//        };
+//
+//        res.status(200).send(response);
     });
 };

@@ -133,9 +133,9 @@ exports.updateItem = function(req, res) {
 
 exports.deleteItem = function(req, res) {
     var data = req.body;
-
-    Item.remove({_id: getId(data._id)}, function(err, doc) {
-        res.send(doc)
+    res.send(data)
+//    Item.remove({_id: getId(data._id)}, function(err, doc) {
+//        res.send(doc)
 //        if(err) throw err;
 //        var response = {
 //            status: 204,
@@ -143,5 +143,5 @@ exports.deleteItem = function(req, res) {
 //        };
 //
 //        res.status(200).send(response);
-    });
+//    });
 };

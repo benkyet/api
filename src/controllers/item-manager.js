@@ -134,7 +134,7 @@ exports.updateItem = function(req, res) {
 exports.deleteItem = function(req, res) {
     var data = req.body;
 
-    Item.remove({ref: data.ref}, function(err, doc) {
+    Item.remove({_id: getId(data._id)}, function(err, doc) {
         if(err) throw err;
         var response = {
             status: 204,

@@ -12,6 +12,11 @@ var s3 = knox.createClient({
 var Item = db.collection('item');
 var Counter = db.collection('counter');
 
+var ObjectID    =   require('mongodb').ObjectID;
+function getId(id) {
+    return new ObjectID(id);
+};
+
 Counter.insert(
     {
         _id: "ref",
@@ -100,6 +105,30 @@ exports.addItem = function(req, res) {
         };
         closure(img, date, i);
     }
+};
+
+//TODO: ability to add/edit a picture as well
+exports.updateItem = function(req, res) {
+    var data = req.body;
+
+    var item_to_update = JSON.parse(JSON.stringify(data));
+    delete item_to_update._id;
+    var update = {$set: {}};
+    for(prop in item_to_update) {
+        update.$set[prop] = item_to_update[prop];
+    };
+
+
+    Item.findAndModify(
+        {_id: getId(data._id)},
+        [],
+        update,
+        {new: true},
+        function(err, doc) {
+            console.log(err, doc)
+            res.status(200).json({status: 200, item: doc});
+        }
+    )
 };
 
 exports.deleteItem = function(req, res) {

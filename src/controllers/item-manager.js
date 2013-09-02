@@ -132,16 +132,14 @@ exports.updateItem = function(req, res) {
 };
 
 exports.deleteItem = function(req, res) {
-    var data = req.body;
-    res.send(data)
-//    Item.remove({_id: getId(data._id)}, function(err, doc) {
-//        res.send(doc)
-//        if(err) throw err;
-//        var response = {
-//            status: 204,
-//            items_deleted: doc
-//        };
-//
-//        res.status(200).send(response);
-//    });
+
+    Item.remove({ref: parseInt(req.params.ref)}, function(err, doc) {
+        if(err) throw err;
+        var response = {
+            status: 204,
+            items_deleted: doc
+        };
+
+        res.status(200).send(response);
+    });
 };

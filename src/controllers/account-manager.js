@@ -167,7 +167,7 @@ exports.updateUser = function(req, res) {
     data.pass = password_hash;
 
     User.findAndModify(
-        {_id: getId(req.user.user_id.toString())},
+        {_id: getId(req.user.user_id)},
         [],
         data,
         {new: true},
@@ -183,7 +183,7 @@ exports.updateUser = function(req, res) {
 
 exports.deleteUser = function(req, res) {
     var data = req.body;
-    User.remove({_id: getId(req.user.user_id)}, function(err, doc) {
+    User.remove({_id: getId(req.user.user_id.toString())}, function(err, doc) {
         if (err) throw err;
         res.status(204).json(doc);
     });

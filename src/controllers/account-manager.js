@@ -164,7 +164,7 @@ exports.updateUser = function(req, res) {
     var salt = bcrypt.genSaltSync();
     var password_hash = bcrypt.hashSync(data.pass, salt);
 
-    data.pass = password_hash;
+    data.pass = password_hash
 
     User.findAndModify(
         {_id: getId(req.user.user_id.toString())},

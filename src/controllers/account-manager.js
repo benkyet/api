@@ -41,7 +41,7 @@ exports.autologin = function(req, res) {
 
         } else {
 
-            User.findOne({username: doc.username}, function(err_u, user){
+            User.findOne({_id: getId(doc.user_id.toString())}, function(err_u, user){
                 var response = {
                     status: 200,
                     user: user
@@ -70,7 +70,6 @@ exports.login = function(req, res) {
 
                 // Create session document
                 var session = {
-                    'username': doc.username,
                     'session_id': session_id,
                     'user_id': doc._id
                 }
@@ -155,18 +154,36 @@ exports.createNewUser = function(req, res) {
                 reason: 'Username already taken'
             };
             res.status(409).json(response);
+        };
+    });
+};
+
+exports.updateUser = function(req, res) {
+    var data = req.body;
+
+    var salt = bcrypt.genSaltSync();
+    var password_hash = bcrypt.hashSync(data.pass, salt);
+
+    data.pass = password_hash;
+
+    User.findAndModify(
+        {_id: getId(req.user.user_id.toString())},
+        [],
+        data,
+        {new: true},
+        function(err, doc) {
+            var response = {
+                status: 200,
+                user: doc
+            }
+            res.status(200).send(response);
         }
-    })
-}
-
-
-
-
+    )
+};
 
 exports.deleteUser = function(req, res) {
     var data = req.body;
-    if(!(req.user.username === data.username)) return res.status(401).send('Not authorized to delete this user');
-    User.remove({username: data.username}, function(err, doc) {
+    User.remove({_id: getId(req.user.user_id.toString())}, function(err, doc) {
         if (err) throw err;
         res.status(204).json(doc);
     });

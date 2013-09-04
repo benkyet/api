@@ -34,6 +34,7 @@ module.exports = function(app) {
     app.post('/login', AM.login);
     app.del('/logout', AM.logout);
     app.post('/user', AM.createNewUser);
+    app.put('/user', auth, AM.updateUser);
     app.delete('/user', auth, AM.deleteUser);
     app.get('/user/items', auth, AM.userItems);
 

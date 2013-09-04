@@ -167,7 +167,7 @@ exports.updateUser = function(req, res) {
     data.pass = password_hash;
 
     User.findAndModify(
-        {_id: getId(req.user.user_id)},
+        {_id: getId(req.user.user_id.toString())},
         [],
         data,
         {new: true},

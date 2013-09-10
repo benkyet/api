@@ -46,6 +46,7 @@ module.exports = function(app) {
     app.delete('/item/:ref', auth, IM.deleteItem);
 
     app.get('/groups', GM.getGroups);
+    app.get('/events/:group', GM.getEventsForGroup);
 
     app.post('/message', MM.sendMessageViaMandrill);
 

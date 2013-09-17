@@ -29,7 +29,7 @@ var config = require('config-env').define('NODE_ENV', function(config) {
         s3_folder: 'prod/',
         fb_id: '531334010270069',
         fb_secret: '54c6c9bcda9602be5beb01fc342ddd15',
-        fb_callback: 'http://benkyet.com/auth/facebook/callback',
+        fb_callback: 'http://benkyet.com/1.0/auth/facebook/callback',
         mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         port: 3000
     });

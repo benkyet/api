@@ -85,7 +85,7 @@ exports.createOrUpdateUserFromFB = function(profile, done) {
                     token: result[0].session_id,
                     user: doc
                 };
-                return done(null, response);
+
 
             });
         }

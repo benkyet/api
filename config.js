@@ -13,7 +13,7 @@ var config = require('config-env').define('NODE_ENV', function(config) {
         s3_folder: 'test/',
         fb_id: '199098720262784',
         fb_secret: '1fb6f81445719664a9f4a74896e431ff',
-        fb_callback: 'http://dev.benkyet.com/auth/facebook/callback',
+        fb_callback: 'http://dev.benkyet.com/1.0/auth/facebook/callback',
         mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         mandrill_test: 'rR-vBeIRFJt5_Tesjflv1g',
         port: 3003

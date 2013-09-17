@@ -1,5 +1,4 @@
 var express     =       require('express');
-var passport    =       require('passport');
 var auth        =       require('./controllers/auth-manager');
 var AM          =       require('./controllers/account-manager');
 var IM          =       require('./controllers/item-manager');
@@ -26,11 +25,21 @@ var auth = AM.isLoggedInMiddleware;
 //}
 
 
-
-
-
-
 module.exports = function(app) {
+    //require passport module and fb plugin
+    var passport = require('passport'),
+        FacebookStrategy = require('passport-facebook').Strategy;
+
+    //Configure fb-passport login
+    passport.use(new FacebookStrategy({
+        clientID: config.param('fb_id'),
+        clientSecret: config.param('fb_secret'),
+        callbackURL: config.param('fb_callback')
+    }, function(accessToken, refreshToken, profile, done) {
+        console.log(profile);
+        console.log(accessToken);
+    }));
+
 
     //facebook auth routes
     app.get('/auth/facebook', passport.authenticate('facebook'));

@@ -40,6 +40,7 @@ module.exports = function(app) {
         process.nextTick(function () {
             console.log(profile, done)
             AM.createOrUpdateUserFromFB(profile, done);
+            return done(null, true)
         });
 
 

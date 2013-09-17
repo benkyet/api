@@ -5,6 +5,8 @@ var IM          =       require('./controllers/item-manager');
 var MM          =       require('./controllers/message-manager');
 var GM          =       require('./controllers/group-manager');
 
+var config = require('./../config.js');
+
 var auth = AM.isLoggedInMiddleware;
 
 

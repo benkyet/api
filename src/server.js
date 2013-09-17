@@ -34,6 +34,26 @@ app.use(express.methodOverride());
 //app.use(passport.initialize());
 //app.use(passport.session());
 
+//require passport module and fb plugin
+var passport = require('passport'),
+    FacebookStrategy = require('passport-facebook').Strategy;
+
+
+
+//Configure fb-passport login
+passport.use(new FacebookStrategy({
+    clientID: config.param('fb_id'),
+    clientSecret: config.param('fb_secret'),
+    callbackURL: config.param('fb_callback')
+}, function(accessToken, refreshToken, profile, done) {
+//        process.nextTick(function () {
+    console.log(profile)
+    //AM.createOrUpdateUserFromFB(profile);
+//        });
+
+
+}));
+
 // Activate Express router
 app.use('/1.0', app.router);
 

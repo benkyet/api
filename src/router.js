@@ -40,6 +40,7 @@ module.exports = function(app) {
     }, function(accessToken, refreshToken, profile, done) {
         console.log(profile);
         console.log(accessToken);
+        done();
     }));
 
 

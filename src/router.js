@@ -41,7 +41,7 @@ module.exports = function(app) {
     }, function(accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
             //console.log(profile, done)
-            AM.createOrUpdateUserFromFB(profile, done);
+            AM.createOrUpdateUserFromFB(profile);
         });
 
 

@@ -31,7 +31,7 @@ module.exports = function(app) {
     var passport = require('passport'),
         FacebookStrategy = require('passport-facebook').Strategy;
 
-    passport.initialize();
+
 
 //Configure fb-passport login
     passport.use(new FacebookStrategy({

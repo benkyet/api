@@ -30,6 +30,9 @@ app.use(express.bodyParser());
 // support _method (PUT and DELETE in forms)
 app.use(express.methodOverride());
 
+var passport = require('passport')
+passport.initialize();
+
 // Activate Express router
 app.use('/1.0', app.router);
 

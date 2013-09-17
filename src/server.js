@@ -31,7 +31,7 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 
 var passport = require('passport')
-passport.initialize();
+app.use(passport.initialize());
 
 // Activate Express router
 app.use('/1.0', app.router);

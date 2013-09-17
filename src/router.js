@@ -48,6 +48,7 @@ module.exports = function(app) {
         failureRedirect: '/login'
     }),
     function(req, res) {
+        console.log(req.user)
         res.redirect('/');
     });
 

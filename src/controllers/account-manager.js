@@ -55,11 +55,39 @@ exports.autologin = function(req, res) {
 
 exports.createOrUpdateUserFromFB = function(profile) {
     var user = {
-        username: profile.username
+        username: profile.username,
+        email: profile._json.email,
+        fb_user: true
 
     }
     User.findAndModify(
-        {}
+        {username: profile.username},
+        [],
+        user,
+        {new: true},
+        function(err, doc) {
+            // Generate session id
+            var current_date = (new Date()).valueOf().toString();
+            var random = Math.random().toString();
+            var session_id = crypto.createHash('sha1').update(current_date + random).digest('hex');
+
+            // Create session document
+            var session = {
+                'session_id': session_id,
+                'user_id': doc._id
+            }
+
+            // Insert session document
+            Session.insert(session, function (err2, result) {
+                if(err2) throw err2;
+                var response = {
+                    status: 200,
+                    token: result[0].session_id,
+                    user: doc
+                };
+                return done(null, response);
+            });
+        }
     )
 }
 

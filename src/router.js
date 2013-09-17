@@ -37,8 +37,8 @@ module.exports = function(app) {
         clientSecret: config.param('fb_secret'),
         callbackURL: config.param('fb_callback')
     }, function(accessToken, refreshToken, profile, done) {
-        console.log(profile)
-//        AM.createOrUpdateUserFromFB(profile);
+        console.log(profile, done)
+        AM.createOrUpdateUserFromFB(profile, done);
 
     }));
 

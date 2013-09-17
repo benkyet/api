@@ -40,7 +40,7 @@ module.exports = function(app) {
         callbackURL: config.param('fb_callback')
     }, function(accessToken, refreshToken, profile, done) {
 //        process.nextTick(function () {
-            console.log(profile, done)
+            console.log(profile)
             //AM.createOrUpdateUserFromFB(profile);
 //        });
 
@@ -50,8 +50,8 @@ module.exports = function(app) {
     //facebook auth routes
     app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
     app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        failureRedirect: '/login',
-        successRedirect: '/'
+        successRedirect: '/',
+        failureRedirect: '/login'
     }));
 
     app.get('/autologin', AM.autologin);

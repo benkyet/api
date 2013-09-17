@@ -40,8 +40,8 @@ module.exports = function(app) {
         callbackURL: config.param('fb_callback')
     }, function(accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
-            //console.log(profile, done)
-            AM.createOrUpdateUserFromFB(profile);
+            console.log(profile, done)
+            //AM.createOrUpdateUserFromFB(profile);
         });
 
 

@@ -60,7 +60,7 @@ exports.createOrUpdateUserFromFB = function(profile, done) {
         fb_user: true
 
     }
-    User.findAndModify(
+    return User.findAndModify(
         {username: profile.username},
         [],
         user,
@@ -78,14 +78,15 @@ exports.createOrUpdateUserFromFB = function(profile, done) {
             }
 
             // Insert session document
-            Session.insert(session, function (err2, result) {
+            return Session.insert(session, function (err2, result) {
                 if(err2) throw err2;
                 var response = {
                     status: 200,
                     token: result[0].session_id,
                     user: doc
                 };
-                
+                return done(null, response);
+
             });
         }
     )

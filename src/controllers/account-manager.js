@@ -53,6 +53,16 @@ exports.autologin = function(req, res) {
     })
 };
 
+exports.createOrUpdateUserFromFB = function(profile) {
+    var user = {
+        username: profile.username
+
+    }
+    User.findAndModify(
+        {}
+    )
+}
+
 exports.login = function(req, res) {
     var data = req.body;
 

@@ -1,4 +1,5 @@
 var express     =       require('express');
+var passport    =       require('passport');
 var auth        =       require('./controllers/auth-manager');
 var AM          =       require('./controllers/account-manager');
 var IM          =       require('./controllers/item-manager');
@@ -30,6 +31,14 @@ var auth = AM.isLoggedInMiddleware;
 
 
 module.exports = function(app) {
+
+    //facebook auth routes
+    app.get('/auth/facebook', passport.authenticate('facebook'));
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    }));
+
     app.get('/autologin', AM.autologin);
     app.post('/login', AM.login);
     app.del('/logout', AM.logout);

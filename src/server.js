@@ -30,6 +30,20 @@ app.use(express.bodyParser());
 // support _method (PUT and DELETE in forms)
 app.use(express.methodOverride());
 
+//require passport module and fb plugin
+var passport = require('passport'),
+    FacebookStrategy = require('passport-facebook').Strategy;
+
+//Configure fb-passport login
+passport.use(new FacebookStrategy({
+    clientID: config.param('fb_id'),
+    clientSecret: config.param('fb_secret'),
+    callbackURL: config.param('fb_callback')
+}, function(accessToken, refreshToken, profile, done) {
+    console.log(profile);
+    console.log(accessToken);
+}));
+
 // Activate Express router
 app.use('/1.0', app.router);
 

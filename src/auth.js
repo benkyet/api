@@ -29,7 +29,7 @@ module.exports.setup = function(app) {
         User.findOne({_id: getId(id)}, done);
     });
 
-    var findOrCreate = function(provider, id, name, done) {
+    var findOrCreate = function(provider, profile, done) {
         User.findOne({"auth.provider": provider, 'auth.id': profile.id}, function(err, user) {
             if (err || user) done(err, user);
             else {
@@ -51,7 +51,7 @@ module.exports.setup = function(app) {
         process.nextTick(function () {
             console.log(profile)
         //AM.createOrUpdateUserFromFB(profile);
-            findOrCreate('facebook', profile.id, profile.name, done);
+            findOrCreate('facebook', profile, done);
         });
 
 

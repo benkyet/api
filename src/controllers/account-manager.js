@@ -48,6 +48,7 @@ exports.autologin = function(req, res) {
         status: 200,
         user: req.user
     };
+    console.log(req.user)
     res.status(200).send(response);
 }
 

@@ -79,4 +79,9 @@ module.exports.routes = function(app) {
 module.exports.authRequired = function(req, res, next) {
     if(req.isAuthenticated()) next();
     else next('user-is-not-logged-in');
+};
+
+module.exports.logout = function(req, res) {
+    req.logOut();
+    res.redirect('/login');
 }

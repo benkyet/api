@@ -15,7 +15,7 @@ module.exports = function(app) {
 
     app.get('/autologin', AM.autologin);
     app.post('/login', AM.login);
-    app.del('/logout', AM.logout);
+    app.del('/logout', require('./auth').logout(req, res));
     app.post('/user', AM.createNewUser);
     app.put('/user', auth, AM.updateUser);
     app.delete('/user', auth, AM.deleteUser);

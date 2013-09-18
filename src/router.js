@@ -11,7 +11,7 @@ var auth = require('./auth').authRequired;
 
 module.exports = function(app) {
 
-    require('./auth').routes;
+    require('./auth').routes(app);
 
     app.get('/autologin', AM.autologin);
     app.post('/login', AM.login);

@@ -30,10 +30,10 @@ module.exports.setup = function(app) {
     });
 
     var findOrCreate = function(provider, profile, done) {
-        User.findOne({"auth.provider": provider, 'auth.id': profile.id}, function(err, user) {
+        User.findOne({'auth.provider': provider, 'auth.id': profile.id}, function(err, user) {
             if (err || user) done(err, user);
             else {
-                var user = {auth: [{provider: provider, id: id}], name: profile.name};
+                var user = {auth: [{provider: provider, id: profile.id}], name: profile.name};
                 User.insert(user, {safe: true}, function(err, users) {
                     done(err, users[0]);
                 })

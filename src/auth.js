@@ -39,8 +39,8 @@ module.exports.setup = function(app) {
                 var user = {
                     auth: [{provider: provider, id: profile.id}],
                     username: profile._json.username,
-                    first: profile._json.first,
-                    last: profile._json.last,
+                    first: profile._json.first_name,
+                    last: profile._json.last_name,
                     email: profile._json.email
                 };
                 User.insert(user, {safe: true}, function(err, users) {

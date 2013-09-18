@@ -39,7 +39,7 @@ app.use(express.methodOverride());
 
 //Waiting for the db object to be published on the global window
 setTimeout(function() {
-    require('./auth').setup;
+    require('./auth').setup(app);
     app.use('/1.0', app.router);
     require('./router')(app);
 }, 1000);

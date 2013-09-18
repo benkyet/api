@@ -157,6 +157,7 @@ exports.logout = function(req, res) {
 
 
 exports.userItems = function(req, res) {
+    console.log(req.user)
 
     Item.find(
         {seller_id: getId(req.user._id.toString())}

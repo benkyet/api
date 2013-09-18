@@ -21,27 +21,35 @@ function getId(id) {
 //    });
 //};
 
+//exports.autologin = function(req, res) {
+////    console.log('autologin')
+//    Session.findOne({session_id: req.headers['token']}, function(err, doc) {
+//
+//        if(!doc) {
+//
+//            res.status(401).json({status: 401, reason: 'Token not found'})
+//
+//        } else {
+//
+//            User.findOne({_id: getId(doc.user_id.toString())}, function(err_u, user){
+//                var response = {
+//                    status: 200,
+//                    user: user
+//                };
+//
+//                res.status(200).json(response);
+//            });
+//        }
+//    })
+//};
+
 exports.autologin = function(req, res) {
-//    console.log('autologin')
-    Session.findOne({session_id: req.headers['token']}, function(err, doc) {
-
-        if(!doc) {
-
-            res.status(401).json({status: 401, reason: 'Token not found'})
-
-        } else {
-
-            User.findOne({_id: getId(doc.user_id.toString())}, function(err_u, user){
-                var response = {
-                    status: 200,
-                    user: user
-                };
-
-                res.status(200).json(response);
-            });
-        }
-    })
-};
+    var response = {
+        status: 200,
+        user: req.user
+    };
+    res.status(200).send(response);
+}
 
 exports.createOrUpdateUserFromFB = function(profile) {
     var user = {

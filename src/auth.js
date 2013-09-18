@@ -39,6 +39,7 @@ module.exports.setup = function(app) {
         process.nextTick(function () {
             console.log(profile)
         //AM.createOrUpdateUserFromFB(profile);
+            done(null, profile);
         });
 
 

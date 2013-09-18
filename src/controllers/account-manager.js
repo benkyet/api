@@ -48,8 +48,12 @@ exports.autologin = function(req, res) {
         status: 200,
         user: req.user
     };
+    var err_response = {
+        status: 401,
+        reason: 'Not logged in'
+    };
     console.log(req.user)
-    res.status(200).send(response);
+    req.user === undefined ? res.status(401).send(err_response) : res.status(200).send(response);
 }
 
 exports.createOrUpdateUserFromFB = function(profile) {

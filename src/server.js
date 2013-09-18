@@ -12,6 +12,7 @@ var app = module.exports = express();
 var mongodb = require('mongodb'),
     MongoClient = mongodb.MongoClient;
 
+//Connection to the database
 global.db = MongoClient.db;
 MongoClient.connect(config.param('mongo_uri'), function(err, d) {
     if(err) {
@@ -22,44 +23,26 @@ MongoClient.connect(config.param('mongo_uri'), function(err, d) {
     }
 });
 
-app.use(express.logger());
-
-// parse request bodies (req.body)
+//Express middleware
+app.use(express.cookieParser());
 app.use(express.bodyParser());
+app.use(express.session({secret: 'Super secret secret'}));
+
+var passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(express.logger());
 
 // support _method (PUT and DELETE in forms)
 app.use(express.methodOverride());
 
-//var passport = require('passport')
-//app.use(passport.initialize());
-//app.use(passport.session());
-
-//require passport module and fb plugin
-var passport = require('passport'),
-    FacebookStrategy = require('passport-facebook').Strategy;
-
-
-
-//Configure fb-passport login
-passport.use(new FacebookStrategy({
-    clientID: config.param('fb_id'),
-    clientSecret: config.param('fb_secret'),
-    callbackURL: config.param('fb_callback')
-}, function(accessToken, refreshToken, profile, done) {
-//        process.nextTick(function () {
-    console.log(profile)
-    //AM.createOrUpdateUserFromFB(profile);
-//        });
-
-
-}));
-
-// Activate Express router
-app.use('/1.0', app.router);
-
+//Waiting for the db object to be published on the global window
 setTimeout(function() {
+    require('./auth').setup;
+    app.use('/1.0', app.router);
     require('./router')(app);
-}, 1000)
+}, 1000);
 
 
 if (!module.parent) {
@@ -69,4 +52,3 @@ if (!module.parent) {
 };
 
 module.exports = app;
-

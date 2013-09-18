@@ -1,5 +1,4 @@
 var express     =       require('express');
-var passport = require('passport');
 var auth        =       require('./controllers/auth-manager');
 var AM          =       require('./controllers/account-manager');
 var IM          =       require('./controllers/item-manager');
@@ -8,33 +7,11 @@ var GM          =       require('./controllers/group-manager');
 
 var config = require('./../config.js');
 
-var auth = AM.isLoggedInMiddleware;
-
-//    function(req, res, next) {
-//    express.basicAuth(function(user, pass, cb) {
-//        var User = db.collection('user');
-//        User.findOne({username: user}, function(err, doc) {
-//            if(!doc) {
-//                res.status(401).json({reason: 'Sorry, this username was not found', status: 401});
-//            } else {
-//                doc.pass === pass ?
-//                    cb(null, doc) :
-//                    res.status(401).json({reason: 'Wrong password', status: 401});
-//            }
-//        });
-//    })(req, res, next);
-//}
+var auth = require('./auth').authRequired;
 
 module.exports = function(app) {
 
-
-
-    //facebook auth routes
-    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
-    app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect: '/',
-        failureRedirect: '/login'
-    }));
+    require('./auth').routes;
 
     app.get('/autologin', AM.autologin);
     app.post('/login', AM.login);

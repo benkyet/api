@@ -10,26 +10,16 @@ function getId(id) {
     return new ObjectID(id);
 }
 
-/**
- * With the basic Auth Middleware included with express, we can stick the
- * auth authenticated on the req.user and grab it in the request handlers.
- * @param req
- * @param res
- */
-//exports.login = function (req, res) {
-//    res.json(req.user, 200);
+//exports.isLoggedInMiddleware = function(req, res, next) {
+//    if(!req.headers['token']) {
+//        next('please-provide-a-token-in-the-headers-of-your-requests');
+//        return
+//    };
+//    Session.findOne({session_id: req.headers['token']}, function(err, doc) {
+//        req.user = doc;
+//        next();
+//    });
 //};
-
-exports.isLoggedInMiddleware = function(req, res, next) {
-    if(!req.headers['token']) {
-        next('please-provide-a-token-in-the-headers-of-your-requests');
-        return
-    };
-    Session.findOne({session_id: req.headers['token']}, function(err, doc) {
-        req.user = doc;
-        next();
-    });
-};
 
 exports.autologin = function(req, res) {
 //    console.log('autologin')

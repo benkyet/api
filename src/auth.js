@@ -26,7 +26,10 @@ module.exports.setup = function(app) {
     This is not only database agnostic, you can also use web services or whatever here.
      */
     passport.deserializeUser(function(id, done) {
-        User.findOne({_id: getId(id)}, done);
+        User.findOne({_id: getId(id)}, function(err, user) {
+            console.log(user);
+            done(err, user);
+        });
     });
 
     var findOrCreate = function(provider, profile, done) {

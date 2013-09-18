@@ -27,7 +27,7 @@ module.exports.setup = function(app) {
      */
     passport.deserializeUser(function(id, done) {
         User.findOne({_id: getId(id)}, function(err, user) {
-            console.log(user);
+            //console.log(user);
             done(err, user);
         });
     });
@@ -36,7 +36,13 @@ module.exports.setup = function(app) {
         User.findOne({'auth.provider': provider, 'auth.id': profile.id}, function(err, user) {
             if (err || user) done(err, user);
             else {
-                var user = {auth: [{provider: provider, id: profile.id}], name: profile.name};
+                var user = {
+                    auth: [{provider: provider, id: profile.id}],
+                    username: profile._json.username,
+                    first: profile._json.first,
+                    last: profile._json.last,
+                    email: profile._json.email
+                };
                 User.insert(user, {safe: true}, function(err, users) {
                     done(err, users[0]);
                 })

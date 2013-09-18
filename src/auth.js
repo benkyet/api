@@ -27,7 +27,19 @@ module.exports.setup = function(app) {
      */
     passport.deserializeUser(function(id, done) {
         User.findOne({_id: getId(id)}, done);
-    })
+    });
+
+    var findOrCreate = function(provider, id, name, done) {
+        User.findOne({"auth.provider": provider, 'auth.id': profile.id}, function(err, user) {
+            if (err || user) done(err, user);
+            else {
+                var user = {auth: [{provider: provider, id: id}], name: profile.name};
+                User.insert(user, {safe: true}, function(err, users) {
+                    done(err, users[0]);
+                })
+            }
+        })
+    }
 
 
 
@@ -39,7 +51,7 @@ module.exports.setup = function(app) {
         process.nextTick(function () {
             console.log(profile)
         //AM.createOrUpdateUserFromFB(profile);
-            done(null, profile);
+            findOrCreate('facebook', profile.id, profile.name, done);
         });
 
 

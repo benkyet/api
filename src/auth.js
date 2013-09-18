@@ -18,7 +18,7 @@ module.exports.setup = function(app) {
     that is necessary to identify it. Usually, the id field will do just fine.
      */
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+        done(null, user._id);
     });
 
     /*

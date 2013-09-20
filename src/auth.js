@@ -69,7 +69,7 @@ module.exports.setup = function(app) {
 };
 
 module.exports.routes = function(app) {
-    app.get('/auth/facebook', passport.authenticate('facebook'));
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
     app.get('/auth/facebook/callback', passport.authenticate('facebook', {
         successRedirect: '/',
         failureRedirect: '/login'

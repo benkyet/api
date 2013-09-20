@@ -83,5 +83,5 @@ module.exports.authRequired = function(req, res, next) {
 
 module.exports.logout = function(req, res) {
     req.logOut();
-    res.redirect('/');
+    res.status(200).send({status: 200});
 }

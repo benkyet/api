@@ -3,6 +3,10 @@ var config = require('config-env').define('ENV', function(config) {
         name: 'benkyet'
     });
 
+    config.config('local', {
+
+    });
+
     config.config('dev', {
         mongo_uri: 'mongodb://localhost:27017/dev_benkyet',
         domain: '@mail.benkyet.com',

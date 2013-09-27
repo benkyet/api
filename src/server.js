@@ -1,4 +1,4 @@
-process.env['NODE_ENV'] = process.env['NODE_ENV'] || 'dev';
+process.env['ENV'] = process.env['ENV'] || 'dev';
 
 //Web server
 var express = require('express');
@@ -7,7 +7,8 @@ var express = require('express');
 var config = require('./../config.js');
 
 //Instance of express
-var app = module.exports = express();
+var app = express();
+exports.app = app;
 
 var mongodb = require('mongodb'),
     MongoClient = mongodb.MongoClient;
@@ -45,10 +46,7 @@ setTimeout(function() {
 }, 1000);
 
 
-if (!module.parent) {
-    var port = config.param('port');
-    app.listen(port);
-    console.log('Listening on port ' + port);
-};
 
-module.exports = app;
+var port = config.param('port');
+app.listen(port);
+console.log('Listening on port ' + port);

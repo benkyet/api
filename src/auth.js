@@ -4,7 +4,8 @@ var config      =       require('./../config.js');
 var User        =       db.collection('user');
 
 var passport = require('passport'),
-    FacebookStrategy = require('passport-facebook').Strategy;
+    FacebookStrategy = require('passport-facebook').Strategy,
+    LocalStrategy = require('passport-local').Strategy;
 
 var ObjectID    =   require('mongodb').ObjectID;
 function getId(id) {
@@ -34,11 +35,29 @@ module.exports.setup = function(app) {
 
     var findOrCreate = function(provider, profile, done) {
         User.findOne({'auth.provider': provider, 'auth.id': profile.id}, function(err, user) {
-            if (err || user) done(err, user);
+            if (err || user) done (err, user);
             else {
                 var user = {
                     auth: [{provider: provider, id: profile.id}],
                     username: profile._json.username,
+                    first: profile._json.first_name,
+                    last: profile._json.last_name,
+                    email: profile._json.email
+                };
+                User.insert(user, {safe: true}, function(err, users) {
+                    done(err, users[0]);
+                })
+            }
+        })
+    };
+
+    var findOrCreateLocal = function(provider, profile, done) {
+        User.findOne({'auth.provider': provider, 'auth.id': profile.id}, function(err, user) {
+            if (err || user) done (err, user);
+            else {
+                var user = {
+                    auth: [{provider: 'local', id: new Date()}],
+                    username: profile,
                     first: profile._json.first_name,
                     last: profile._json.last_name,
                     email: profile._json.email
@@ -65,6 +84,12 @@ module.exports.setup = function(app) {
 
 
     }));
+
+//    passport.use(new LocalStrategy(
+//        function(username, password, done) {
+//            findOrCreate('local')
+//        }
+//    ))
 
 };
 

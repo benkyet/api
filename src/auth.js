@@ -51,25 +51,6 @@ module.exports.setup = function(app) {
         })
     };
 
-    var findOrCreateLocal = function(provider, profile, done) {
-        User.findOne({'auth.provider': provider, 'auth.id': profile.id}, function(err, user) {
-            if (err || user) done (err, user);
-            else {
-                var user = {
-                    auth: [{provider: 'local', id: new Date()}],
-                    username: profile,
-                    first: profile._json.first_name,
-                    last: profile._json.last_name,
-                    email: profile._json.email
-                };
-                User.insert(user, {safe: true}, function(err, users) {
-                    done(err, users[0]);
-                })
-            }
-        })
-    }
-
-
 
     passport.use(new FacebookStrategy({
         clientID: config.param('fb_id'),
@@ -84,12 +65,6 @@ module.exports.setup = function(app) {
 
 
     }));
-
-//    passport.use(new LocalStrategy(
-//        function(username, password, done) {
-//            findOrCreate('local')
-//        }
-//    ))
 
 };
 

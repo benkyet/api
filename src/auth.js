@@ -62,8 +62,6 @@ module.exports.setup = function(app) {
         //AM.createOrUpdateUserFromFB(profile);
             findOrCreate('facebook', profile, done);
         });
-
-
     }));
 
 };

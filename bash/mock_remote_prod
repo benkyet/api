@@ -1,0 +1,2 @@
+scp mock_prod.js slate:~/mocks/
+ssh slate 'mongo benkyet ./mocks/mock_prod.js'

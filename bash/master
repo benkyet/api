@@ -1,0 +1,2 @@
+git commit -am "pushing to master branch"
+git push slate master

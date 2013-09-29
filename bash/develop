@@ -1,0 +1,2 @@
+git commit -am "pushing to development branch"
+git push slate develop

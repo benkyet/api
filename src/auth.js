@@ -60,6 +60,7 @@ module.exports.setup = function(app) {
         process.nextTick(function () {
             console.log(profile)
         //AM.createOrUpdateUserFromFB(profile);
+            console.log(accessToken);
             findOrCreate('facebook', profile, done);
         });
     }));

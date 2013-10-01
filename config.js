@@ -4,7 +4,19 @@ var config = require('config-env').define('ENV', function(config) {
     });
 
     config.config('local', {
-
+        mongo_uri: 'mongodb://localhost:27017/dev_benkyet',
+        domain: '@mail.benkyet.com',
+        s3_key: 'AKIAICADFD3QBIHXQTOA',
+        s3_secret: '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',
+        s3_bucket: 'benkyet',
+        s3_region: 'eu-west-1',
+        s3_folder: 'test/',
+        fb_id: '242355285916432',
+        fb_secret: '5325b432b62e14967c2153bf4e6bd860',
+        fb_callback: 'http://localhost:8000/1.0/auth/facebook/callback',
+        mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
+        mandrill_test: 'rR-vBeIRFJt5_Tesjflv1g',
+        port: 3003
     });
 
     config.config('dev', {
@@ -15,8 +27,8 @@ var config = require('config-env').define('ENV', function(config) {
         s3_bucket: 'benkyet',
         s3_region: 'eu-west-1',
         s3_folder: 'test/',
-        fb_id: '242355285916432',
-        fb_secret: '5325b432b62e14967c2153bf4e6bd860',
+        fb_id: '538342299575954',
+        fb_secret: '7740935946f05e3f1d2cd5175bad38fb',
         fb_callback: 'http://localhost:8000/1.0/auth/facebook/callback',
         mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         mandrill_test: 'rR-vBeIRFJt5_Tesjflv1g',

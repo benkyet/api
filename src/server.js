@@ -1,4 +1,4 @@
-process.env['ENV'] = process.env['ENV'] || 'dev';
+process.env['ENV'] = process.env['ENV'] || 'local';
 
 //Web server
 var express = require('express');

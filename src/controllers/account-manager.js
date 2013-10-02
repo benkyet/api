@@ -204,13 +204,8 @@ exports.createNewUser = function(req, res) {
 exports.updateUser = function(req, res) {
     var data = req.body;
 
-    var salt = bcrypt.genSaltSync();
-    var password_hash = bcrypt.hashSync(data.pass, salt);
-
-    data.pass = password_hash
-
     User.findAndModify(
-        {_id: getId(req.user.user_id.toString())},
+        {_id: getId(req.user._id.toString())},
         [],
         data,
         {new: true},

@@ -84,6 +84,7 @@ exports.addItem = function(req, res) {
                 }
 
                 if(m === length) {
+                    console.log(req.user)
                     data.seller_id = req.user._id;
                     getNextSequence('ref', function(ref) {
                         data.ref = ref;

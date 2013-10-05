@@ -54,7 +54,7 @@ exports.autologin = function(req, res) {
     };
     console.log(req.user)
     req.user === undefined ? res.status(401).send(err_response) : res.status(200).send(response);
-}
+};
 
 exports.createOrUpdateUserFromFB = function(profile) {
     var user = {

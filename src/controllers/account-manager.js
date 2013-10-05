@@ -93,7 +93,7 @@ exports.createOrUpdateUserFromFB = function(profile) {
             });
         }
     )
-}
+};
 
 exports.login = function(req, res) {
     var data = req.body;

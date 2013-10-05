@@ -14,6 +14,7 @@ var config = require('config-env').define('ENV', function(config) {
         fb_id: '242355285916432',
         fb_secret: '5325b432b62e14967c2153bf4e6bd860',
         fb_callback: 'http://localhost:8000/1.0/auth/facebook/callback',
+        scope: ['email', 'user_friends', 'user_education_history','friends_education_history'],
         mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         mandrill_test: 'rR-vBeIRFJt5_Tesjflv1g',
         port: 3003
@@ -30,6 +31,7 @@ var config = require('config-env').define('ENV', function(config) {
         fb_id: '538342299575954',
         fb_secret: '7740935946f05e3f1d2cd5175bad38fb',
         fb_callback: 'http://dev.benkyet.com/1.0/auth/facebook/callback',
+        scope: ['email', 'user_friends', 'user_education_history','friends_education_history'],
         mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         mandrill_test: 'rR-vBeIRFJt5_Tesjflv1g',
         port: 3003
@@ -46,6 +48,7 @@ var config = require('config-env').define('ENV', function(config) {
         fb_id: '199098720262784',
         fb_secret: '1fb6f81445719664a9f4a74896e431ff',
         fb_callback: 'http://benkyet.com/1.0/auth/facebook/callback',
+        scope: 'email',
         mandrill_key: 'rkunpHmExBR5biUVEiwquQ',
         port: 3000
     });

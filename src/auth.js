@@ -28,7 +28,6 @@ module.exports.setup = function(app) {
      */
     passport.deserializeUser(function(id, done) {
         User.findOne({_id: getId(id)}, function(err, user) {
-            //console.log(user);
             done(err, user);
         });
     });
@@ -105,4 +104,4 @@ module.exports.authRequired = function(req, res, next) {
 module.exports.logout = function(req, res) {
     req.logOut();
     res.status(200).send({status: 200});
-}
+};

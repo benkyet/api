@@ -35,7 +35,7 @@ exports.inboundMessage = function(req, res) {
                 "Reply-To": ""
             }
         }
-    };
+    }
 
     outbound.message.subject = inbound.subject;
     outbound.message.html = inbound.html;

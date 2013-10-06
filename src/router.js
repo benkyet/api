@@ -36,8 +36,8 @@ module.exports = function(app) {
 
     //Useful when configuring Mandrill
     //Uncomment for testing
-//    app.post('/inbound', function(req, res) {
-//        res.status(200).send('ok')
-//    })
+    app.post('/inbound', function(req, res) {
+        res.status(200).send('ok')
+    })
     app.post('/inbound', MM.inboundMessage)
 };

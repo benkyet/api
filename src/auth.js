@@ -34,19 +34,42 @@ module.exports.setup = function(app) {
     });
 
     var findOrCreate = function(provider, profile, done) {
-        User.findOne({'auth.provider': provider, 'auth.id': profile.id}, function(err, user) {
-            if (err || user) done (err, user);
+
+        //Look for a user already registered
+        User.findOne({'auth.provider': provider, 'auth.id': profile.id}, function(err_user, user) {
+            if (err_user || user) done (err_user, user);
             else {
-                var user = {
-                    auth: [{provider: provider, id: profile.id}],
-                    username: profile._json.username,
-                    first: profile._json.first_name,
-                    last: profile._json.last_name,
-                    email: profile._json.email
-                };
-                User.insert(user, {safe: true}, function(err, users) {
-                    done(err, users[0]);
-                })
+                //Look for user not registered but selling books
+                User.findOne({email_fb: profile._json.email}, function (err_email_user, email_user) {
+                    if (email_user) {
+                        email_user.auth = [{provider: provider, id: profile.id}];
+                        email_user.username = profile._json.username;
+                        email_user.first = profile._json.first_name;
+                        email_user.last = profile._json.last_name;
+                        User.findAndModify(
+                            {email_fb: profile._json.email},
+                            [],
+                            email_user,
+                            {},
+                            function(err_updated_user, updated_user) {
+                                done(err_updated_user, updated_user);
+                            }
+
+                        )
+                    } else {
+                        var new_user = {
+                            auth: [{provider: provider, id: profile.id}],
+                            username: profile._json.username,
+                            first: profile._json.first_name,
+                            last: profile._json.last_name,
+                            email: profile._json.email
+                        };
+                        User.insert(new_user, {safe: true}, function(err, users) {
+                            done(err, users[0]);
+                        })
+                    }
+                });
+
             }
         })
     };

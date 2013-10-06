@@ -13,7 +13,7 @@ function getId(id) {
 
 
 exports.inboundMessage = function(req, res) {
-    var inbound = JSON.parse(req.body.mandrill_events)[0].msg;
+    var inbound = req.body.mandrill_events[0].msg;
 
     res.send('ok');
 

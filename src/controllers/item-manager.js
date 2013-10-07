@@ -76,7 +76,7 @@ exports.addItem = function(req, res) {
     }
 
     var length = data.pictures.length;
-    var m = 0
+    var m = 0;
     console.log(data);
 
     for (var i = 0; i < length; i++) {

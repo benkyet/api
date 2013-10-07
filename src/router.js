@@ -21,6 +21,10 @@ module.exports = function(app) {
     app.delete('/user', auth, AM.deleteUser);
     app.get('/user/items', auth, AM.userItems);
 
+    app.get('/admin', auth, function(req, res) {
+        res.status(200).send(req.user);
+    });
+
 
     app.get('/items', IM.getGroupList);
     app.get('/item/:ref', IM.getItem);

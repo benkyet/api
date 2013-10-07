@@ -8,10 +8,11 @@ var config = require('./../config.js');
 
 //Instance of express
 var app = express();
-exports.app = app;
+module.exports = app;
 
 var mongodb = require('mongodb'),
     MongoClient = mongodb.MongoClient;
+var ObjectId    =   require('mongodb').ObjectID;
 
 //Connection to the database
 global.db = MongoClient.db;
@@ -30,9 +31,13 @@ app.use(express.bodyParser());
 app.use(express.session({secret: 'Super secret secret'}));
 
 var passport = require('passport');
-app.use(passport.initialize());
+if(process.env['ENV'] === 'local') {
+    var passportMock = require('./../test/mock-passport-middleware');
+    app.use(passportMock.initialize({username: 'James', email: 'james.nocentini2@gmail.com', _id: ObjectId('012345678901234567890123')}));
+} else {
+    app.use(passport.initialize());
+}
 app.use(passport.session());
-
 app.use(express.logger());
 
 // support _method (PUT and DELETE in forms)

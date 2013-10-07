@@ -82,7 +82,7 @@ exports.addItem = function(req, res) {
     var m = 0
 
     for (var i = 0; i < length; i++) {
-        var img = new Buffer(data.pictures[i], 'base64');
+        var img = new Buffer(data.pictures[i].split(',')[1], 'base64');
         var date = new Date()
         function closure (aImg, aDate, j) {
             return s3.putBuffer(aImg, config.param('s3_folder') + aDate.valueOf().toString() + '.jpg', {'x-amz-acl': 'public-read'}, function(err, s3res) {
@@ -120,26 +120,60 @@ exports.addItem = function(req, res) {
 //TODO: ability to add/edit a picture as well
 exports.updateItem = function(req, res) {
     var data = req.body;
-
-    var item_to_update = JSON.parse(JSON.stringify(data));
+    console.log(data)
+    var item_id = data._id;
+    var item_to_update = data;
     delete item_to_update._id;
     var update = {$set: {}};
-    for(prop in item_to_update) {
-        update.$set[prop] = item_to_update[prop];
-    };
+    uploadPicToS3(data.pictures, function(imgs) {
+        item_to_update.pictures = imgs;
+        for(prop in item_to_update) {
+            update.$set[prop] = item_to_update[prop];
+        };
 
 
-    Item.findAndModify(
-        {_id: getId(data._id)},
-        [],
-        update,
-        {new: true},
-        function(err, doc) {
-            console.log(err, doc)
-            res.status(200).json({status: 200, item: doc});
-        }
-    )
+        Item.findAndModify(
+            {_id: getId(item_id)},
+            [],
+            update,
+            {new: true},
+            function(err, doc) {
+                console.log(err, doc)
+                res.status(200).json({status: 200, item: doc});
+            }
+        )
+    });
+
 };
+
+function uploadPicToS3 (imgs, callback) {
+
+    var length = imgs.length;
+    var m = 0
+
+    for (var i = 0; i < length; i++) {
+        var img = new Buffer(imgs[i].split(',')[1], 'base64');
+        var date = new Date()
+        function closure (aImg, aDate, j) {
+            return s3.putBuffer(aImg, config.param('s3_folder') + aDate.valueOf().toString() + '.jpg', {'x-amz-acl': 'public-read'}, function(err, s3res) {
+                //console.log(err, s3res.req.url);
+                if(s3res.statusCode === 200) {
+                    imgs[j] = s3res.req.url
+                    m++;
+                }
+
+                if(m === length) {
+
+                    callback(imgs);
+
+
+
+                };
+            });
+        };
+        closure(img, date, i);
+    }
+}
 
 exports.deleteItem = function(req, res) {
 

@@ -82,7 +82,7 @@ exports.addItem = function(req, res) {
     var m = 0
 
     for (var i = 0; i < length; i++) {
-        var img = new Buffer(data.pictures[i].split(',')[1], 'base64');
+        var img = new Buffer(data.pictures[i], 'base64');
         var date = new Date()
         function closure (aImg, aDate, j) {
             return s3.putBuffer(aImg, config.param('s3_folder') + aDate.valueOf().toString() + '.jpg', {'x-amz-acl': 'public-read'}, function(err, s3res) {
